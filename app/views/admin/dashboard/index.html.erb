@@ -1,0 +1,43 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+  <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-center text-center">
+    <p class="text-gray-500 text-sm">Total Events:</p>
+    <p class="text-3xl font-bold text-black-600"><%= @total_events %></p>
+  </div>
+
+  <div class="bg-white rounded-lg shadow p-4 flex flex-col justify-center text-center">
+    <p class="text-gray-500 text-sm">Total Registrations:</p>
+    <p class="text-3xl font-bold text-black-600"><%= @total_registrations %></p>
+  </div>
+</div>
+
+<div class="bg-white rounded-lg shadow p-6 mb-6">
+  <h2 class="text-lg font-semibold mb-4 text-gray-800">Recent Events: </h2>
+  <% if @recent_events.any? %>
+    <ul class="divide-y divide-gray-200">
+      <% @recent_events.each do |event| %>
+        <li class="py-2 text-sm text-gray-700">
+          <span class="font-medium"><%= event.name %></span>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-gray-500 text-sm">No recent events.</p>
+  <% end %>
+</div>
+
+<div class="bg-white rounded-lg shadow p-6">
+  <h2 class="text-lg font-semibold mb-4 text-gray-800">Recent Registrations: </h2>
+  <% if @recent_registrations.any? %>
+    <ul class="divide-y divide-gray-200">
+      <% @recent_registrations.each do |registration| %>
+        <li class="py-2 text-sm text-gray-700">
+          <span class="font-medium"><%= registration.attendee_name %></span> -
+          <%= registration.attendee_email %>
+          (<span class="text-gray-600"><%= registration.event.name %></span>)
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-gray-500 text-sm">No recent registrations.</p>
+  <% end %>
+</div>

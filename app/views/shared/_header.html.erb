@@ -1,0 +1,27 @@
+<header class="bg-white shadow">
+  <div class="container mx-auto flex items-center justify-between p-4">
+    <h1 class="text-xl font-bold">
+      <% if controller_path.starts_with?("admin/") %>
+        <!-- In admin namespace: plain text -->
+        <span class="text-blue-600">Admin Dashboard</span>
+      <% else %>
+        <% if user_signed_in? %>
+          <!-- Logged in: clickable -->
+          <%= link_to "Event Registration App", events_path, class: "text-blue-600 hover:text-blue-800" %>
+        <% else %>
+          <!-- Not logged in: plain text -->
+          <span class="text-blue-600">Event Registration App</span>
+        <% end %>
+      <% end %>
+    </h1>
+
+    <div class="flex items-center space-x-4">
+      <% if user_signed_in? %>
+        <%= button_to "Logout",
+                      destroy_user_session_path,
+                      method: :delete,
+                      class: "bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" %>
+      <% end %>
+    </div>
+  </div>
+</header>

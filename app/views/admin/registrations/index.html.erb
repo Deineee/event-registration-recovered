@@ -1,0 +1,87 @@
+<h1 class="text-2xl font-bold mb-4">Registration Management</h1>
+
+<%= form_with url: admin_registrations_path, method: :get, local: true, class: "mb-4 flex space-x-2" do |f| %>
+  <div class="relative flex-1">
+    <%= f.search_field :attendee_name_or_attendee_email_or_event_name_cont,
+                       name: "q[attendee_name_or_attendee_email_or_event_name_cont]",
+                       value: params.dig(:q, :attendee_name_or_attendee_email_or_event_name_cont),
+                       placeholder: "Search registrations...",
+                       class: "border rounded p-2 pr-10 w-full" %>
+
+    <% if params.dig(:q, :attendee_name_or_attendee_email_or_event_name_cont).present? %>
+      <%= link_to "✕",
+                  admin_registrations_path,
+                  class: "absolute right-5 top-5 transform -translate-y-5 text-gray-400 hover:text-gray-600 text-lg" %>
+    <% end %>
+  </div>
+
+  <%= f.submit "Search", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+<% end %>
+
+<% if @registrations.any? %>
+  <%= form_with url: bulk_destroy_admin_registrations_path, method: :delete, local: true, id: "bulk-delete-registrations-form" do %>
+    <table class="min-w-full bg-white shadow rounded">
+      <thead>
+        <tr>
+          <th class="p-2"><input type="checkbox" id="select_all_registrations" class="accent-blue-600"></th>
+          <th class="p-2 text-left">Attendee</th>
+          <th class="p-2 text-left">Email</th>
+          <th class="p-2 text-left">Event</th>
+          <th class="p-2 text-left">Registered At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @registrations.each do |registration| %>
+          <tr class="border-t hover:bg-gray-50 transition">
+            <td class="p-2 text-center">
+              <%= check_box_tag "registration_ids[]", registration.id, false, class: "accent-blue-600" %>
+            </td>
+            <td class="p-2"><%= registration.attendee_name %></td>
+            <td class="p-2"><%= registration.attendee_email %></td>
+            <td class="p-2"><%= registration.event.name %></td>
+            <td class="p-2"><%= registration.created_at.strftime("%B %d, %Y") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <%= submit_tag "Delete Selected",
+        class: "mt-3 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700",
+        id: "bulk-delete-registrations-button" %>
+  <% end %>
+
+  <%= link_to "Export CSV", export_admin_registrations_path(format: :csv),
+              class: "mt-3 inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" %>
+
+  <%= paginate @registrations %>
+<% else %>
+  <p class="text-center text-gray-500 mt-4">No registrations found for your search.</p>
+<% end %>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const selectAll = document.getElementById("select_all_registrations");
+  if (selectAll) {
+    selectAll.addEventListener("change", function(e) {
+      document.querySelectorAll('input[name="registration_ids[]"]').forEach(cb => cb.checked = e.target.checked);
+    });
+  }
+
+  const form = document.getElementById("bulk-delete-registrations-form");
+  const button = document.getElementById("bulk-delete-registrations-button");
+
+  if (form && button) {
+    form.addEventListener("submit", function(event) {
+      const checkedBoxes = document.querySelectorAll('input[name="registration_ids[]"]:checked');
+      if (checkedBoxes.length === 0) {
+        alert("Please select at least one registration to delete.");
+        event.preventDefault();
+        return;
+      }
+      if (!confirm("Are you sure you want to delete the selected registrations? This action cannot be undone.")) {
+        event.preventDefault();
+      }
+    });
+  }
+});
+</script>

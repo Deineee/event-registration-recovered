@@ -1,0 +1,29 @@
+<%= form_with model: [event, registration], local: true do |form| %>
+  <% if registration.errors.any? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <p><strong><%= pluralize(registration.errors.count, "error") %> prohibited this registration from being saved:</strong></p>
+      <ul class="list-disc pl-5">
+        <% registration.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <%= form.label :attendee_name, class: "block text-gray-700" %>
+    <%= form.text_field :attendee_name, class: "mt-1 block w-full border-gray-300 rounded shadow-sm" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :attendee_email, class: "block text-gray-700" %>
+    <%= form.email_field :attendee_email, class: "mt-1 block w-full border-gray-300 rounded shadow-sm" %>
+  </div>
+
+  <div class="flex space-x-2">
+  <%= form.submit (registration.persisted? ? "Save" : "Register"), class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+  <%= link_to "Cancel",
+              event_path(event),
+              class: "bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" %>
+</div>
+<% end %>
