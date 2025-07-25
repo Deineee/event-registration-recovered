@@ -17,6 +17,7 @@
 
     <div class="flex items-center space-x-4">
       <% if user_signed_in? %>
+      <span class="text-gray-700"><%= current_user.email %></span>
         <%= button_to "Logout",
                       destroy_user_session_path,
                       method: :delete,

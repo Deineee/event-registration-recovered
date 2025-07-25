@@ -20,7 +20,8 @@ gem "jbuilder"
 gem 'ransack'
 # Use Kaminari for pagination 
 gem 'kaminari'
-
+# Use CSV for exporting data
+gem 'csv', '~> 3.0'
 
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]

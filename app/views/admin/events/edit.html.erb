@@ -28,7 +28,7 @@
 
   <div class="mb-4">
     <%= form.label :status, "Status", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.select :status, options_for_select([["Ongoing", "ongoing"], ["Closed", "closed"]], @event.status),
+    <%= form.select :status, options_for_select([["Not Started", "not_started"], ["Ongoing", "ongoing"], ["Closed", "closed"]], @event.status),
                     {}, class: "border rounded p-2 w-full" %>
   </div>
 

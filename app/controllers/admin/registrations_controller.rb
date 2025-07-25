@@ -10,7 +10,8 @@ class Admin::RegistrationsController < Admin::BaseController
   end
 
   def export
-    @registrations = Registration.all
+    @q = Registration.ransack(params[:q])
+    @registrations = @q.result.includes(:event).order(created_at: :desc)
     send_data @registrations.to_csv, filename: "registrations-#{Date.today}.csv"
   end
 end

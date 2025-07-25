@@ -5,12 +5,11 @@ class Event < ApplicationRecord
   validates :location, :start_date, :end_date, presence: true
   validates :name, presence: true, length: { maximum: 100 }
   validates :description, presence: true, length: { maximum: 500 }
-  validates :status, inclusion: { in: %w[ongoing closed] }
+  validates :status, inclusion: { in: %w[not_started ongoing closed] }
   validate :end_date_after_start_date
 
-  before_save :update_status_based_on_end_date
+  before_save :set_status_based_on_dates
 
-  # Allowlisted fields for Ransack searching
   def self.ransackable_attributes(auth_object = nil)
     %w[
       id
@@ -26,24 +25,20 @@ class Event < ApplicationRecord
     ]
   end
 
-  def update_status_if_expired
-    if end_date.present? && end_date < Date.today && status != "closed"
-      update(status: "closed")
-    end
-  end
-
-  def update_status_based_on_end_date
-    if end_date.present?
-      self.status ||= end_date < Date.today ? "closed" : "ongoing"
-    end
-  end
-
-  after_find :check_and_update_status
-
   private
 
-  def check_and_update_status
-    update_status_if_expired
+  def set_status_based_on_dates
+    if start_date.present? && end_date.present?
+      today = Date.today
+
+      if today < start_date
+        self.status = "not_started"
+      elsif today >= start_date && today <= end_date
+        self.status = "ongoing"
+      else
+        self.status = "closed"
+      end
+    end
   end
 
   def end_date_after_start_date

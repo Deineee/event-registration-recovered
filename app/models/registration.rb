@@ -1,3 +1,4 @@
+require 'csv'
 class Registration < ApplicationRecord
   belongs_to :event
   belongs_to :user
@@ -18,5 +19,22 @@ class Registration < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     %w[event user]
+  end
+
+  def self.to_csv
+    attributes = %w[attendee_name attendee_email event_name created_at]
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.includes(:event).find_each do |registration|
+        csv << [
+          registration.attendee_name,
+          registration.attendee_email,
+          registration.event&.name,
+          registration.created_at.strftime("%Y-%m-%d %H:%M")
+        ]
+      end
+    end
   end
 end
