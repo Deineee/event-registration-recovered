@@ -80,6 +80,8 @@ test:
 #
 production:
   url: <%= ENV['DATABASE_URL'] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
   primary: &primary_production
     <<: *default
     database: event_registration_production
