@@ -7,8 +7,13 @@
   </div>
 
   <div class="mb-4">
-    <%= form.label :date, "Event Date", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.date_field :date, class: "border rounded p-2 w-full", required: true %>
+    <%= form.label :start_date, "Start Date", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.date_field :start_date, class: "border rounded p-2 w-full", required: true %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :end_date, "End Date", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.date_field :end_date, class: "border rounded p-2 w-full", required: true %>
   </div>
 
   <div class="mb-4">

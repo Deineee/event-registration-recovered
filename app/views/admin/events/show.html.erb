@@ -2,7 +2,8 @@
 
 <div class="bg-white rounded shadow p-6 space-y-4">
   <p><strong>Name:</strong> <%= @event.name %></p>
-  <p><strong>Date:</strong> <%= @event.date %></p>
+  <p><strong>Start Date:</strong> <%= @event.start_date.strftime("%B %d, %Y") if @event.start_date %></p>
+  <p><strong>End Date:</strong> <%= @event.end_date.strftime("%B %d, %Y") if @event.end_date %></p>
   <p><strong>Location:</strong> <%= @event.location %></p>
   <p><strong>Status:</strong> <%= @event.status.capitalize %></p>
   <p><strong>Description:</strong> <%= @event.description.presence || "No description provided." %></p>

@@ -5,7 +5,7 @@
     <%= f.search_field :attendee_name_or_attendee_email_or_event_name_cont,
                        name: "q[attendee_name_or_attendee_email_or_event_name_cont]",
                        value: params.dig(:q, :attendee_name_or_attendee_email_or_event_name_cont),
-                       placeholder: "Search registrations...",
+                       placeholder: "Search attendee name...",
                        class: "border rounded p-2 pr-10 w-full" %>
 
     <% if params.dig(:q, :attendee_name_or_attendee_email_or_event_name_cont).present? %>

@@ -1,5 +1,5 @@
 <h1 class="text-2xl font-bold mb-2"><%= @event.name %></h1>
-<p><strong>Date:</strong> <%= @event.date.strftime("%B %d, %Y") %></p>
+<p><strong>Date:</strong> <%= "#{@event.start_date.strftime('%B %d, %Y')} - #{@event.end_date.strftime('%B %d, %Y')}" %></p>
 <p><strong>Location:</strong> <%= @event.location %></p>
 <p><strong>Description:</strong> <%= @event.description %></p>
 

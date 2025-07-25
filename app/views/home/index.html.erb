@@ -11,7 +11,7 @@
 
 <div class="mt-8">
   <h3 class="text-xl font-bold mb-4">Upcoming Events</h3>
-  <% @events = Event.all.order(date: :asc) %>
+  <% @events = Event.where("end_date >= ?", Date.today).order(:start_date) %>
   <% if @events.any? %>
     <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
       <% @events.each do |event| %>
@@ -20,7 +20,7 @@
             <%= event.name %>
           </p>
           <p class="text-gray-600 text-sm">
-            <%= event.date.strftime("%B %d, %Y") %> | <%= event.location %>
+            <%= "#{event.start_date.strftime('%B %d, %Y')} - #{event.end_date.strftime('%B %d, %Y')}" %> | <%= event.location %>
           </p>
         </div>
       <% end %>

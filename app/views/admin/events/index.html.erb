@@ -5,7 +5,7 @@
     <%= f.text_field :name_cont,
                      name: "q[name_cont]",
                      value: params.dig(:q, :name_cont),
-                     placeholder: "Search events...",
+                     placeholder: "Search event by name...",
                      class: "border rounded p-2 pr-10 w-full" %>
 
     <% if params.dig(:q, :name_cont).present? %>
@@ -18,7 +18,6 @@
   <%= f.submit "Search", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
 <% end %>
 
-
 <% if @events.any? %>
   <%= form_with url: bulk_destroy_admin_events_path, method: :delete, local: true, id: "bulk-delete-events-form" do %>
     <table class="min-w-full bg-white shadow rounded">
@@ -26,7 +25,8 @@
         <tr>
           <th class="p-2"><input type="checkbox" id="select_all_events" class="accent-blue-600"></th>
           <th class="p-2 text-left">Name</th>
-          <th class="p-2 text-left">Date</th>
+          <th class="p-2 text-left">Start Date</th>
+          <th class="p-2 text-left">End Date</th>
           <th class="p-2 text-left">Location</th>
           <th class="p-2 text-left">Status</th>
           <th class="p-2 text-left">Actions</th>
@@ -39,7 +39,8 @@
               <%= check_box_tag "event_ids[]", event.id, false, class: "accent-blue-600" %>
             </td>
             <td class="p-2"><%= event.name %></td>
-            <td class="p-2"><%= event.date.strftime("%B %d, %Y") %></td>
+            <td class="p-2"><%= event.start_date.strftime("%B %d, %Y") if event.start_date %></td>
+            <td class="p-2"><%= event.end_date.strftime("%B %d, %Y") if event.end_date %></td>
             <td class="p-2"><%= event.location %></td>
             <td class="p-2">
               <span class="<%= event.status == 'closed' ? 'text-red-600' : 'text-green-600' %> font-medium">
@@ -90,5 +91,3 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
-
-
