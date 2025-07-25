@@ -8,36 +8,32 @@ class Event < ApplicationRecord
   validates :status, inclusion: { in: %w[not_started ongoing closed] }
   validate :end_date_after_start_date
 
-  before_save :set_status_based_on_dates
+  before_create :set_status_based_on_dates
 
+  # Allowlisted fields for Ransack
   def self.ransackable_attributes(auth_object = nil)
-    %w[
-      id
-      name
-      location
-      start_date
-      end_date
-      status
-      created_at
-      updated_at
-      description
-      user_id
-    ]
+    %w[id name location start_date end_date status created_at updated_at description user_id]
   end
+
+  def set_status_based_on_dates
+    today = Date.today
+
+    if end_date.present? && end_date < today
+      self.status = "closed"
+    elsif start_date.present? && start_date > today
+      self.status = "not_started"
+    else
+      self.status = "ongoing"
+    end
+  end
+
+  after_find :check_and_update_status
 
   private
 
-  def set_status_based_on_dates
-    if start_date.present? && end_date.present?
-      today = Date.today
-
-      if today < start_date
-        self.status = "not_started"
-      elsif today >= start_date && today <= end_date
-        self.status = "ongoing"
-      else
-        self.status = "closed"
-      end
+  def check_and_update_status
+    if end_date.present? && end_date < Date.today && status != "closed"
+      update_column(:status, "closed")
     end
   end
 
