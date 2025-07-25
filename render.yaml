@@ -17,5 +17,8 @@ services:
           name: event_registration_db
           property: connectionString
       - key: RAILS_MASTER_KEY
-        sync:false- key: WEB_CONCURRENCY
-        value: 2 # sensible default
+        sync: false
+      - key: RAILS_ENV
+        value: production
+      - key: WEB_CONCURRENCY
+        value: 2
