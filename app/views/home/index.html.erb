@@ -13,6 +13,7 @@
   <h3 class="text-xl font-bold mb-4">Upcoming Events</h3>
   <% @events = Event.includes(:user).where("end_date >= ?", Date.today).order(:start_date) %>
   <% if @events.any? %>
+
     <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
       <% @events.each do |event| %>
         <div class="border rounded shadow-sm p-5 hover:bg-gray-50 transition flex flex-col items-center text-center">
@@ -24,6 +25,11 @@
           </p>
           <p class="text-gray-500 text-xs mt-1">
             Created by: <%= event.user.email %>
+          </p>
+          <p class="mt-1">
+            <span class="<%= event.status == 'closed' ? 'text-red-600' : event.status == 'not_started' ? 'text-yellow-600' : 'text-green-600' %> text-sm font-medium">
+              <%= event.status.humanize %>
+            </span>
           </p>
         </div>
       <% end %>
