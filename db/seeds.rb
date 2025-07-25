@@ -4,10 +4,12 @@ admin_email = ENV.fetch('ADMIN_EMAIL', 'admin@example.com')
 admin_password = ENV.fetch('ADMIN_PASSWORD', 'securepassword')
 
 admin = User.find_or_initialize_by(email: admin_email)
-admin.name = "Admin"
-admin.password = securepassword
-admin.password_confirmation = securepassword
-admin.role = "admin" # ensure you have a `role` column or `enum role: { admin: 0, user: 1 }` in User model
-admin.save!
+admin.password = admin_password
+admin.password_confirmation = admin_password
+admin.role = "admin" # Ensure you have `role` column (you do)
 
-puts "✅ Admin user seeded: #{admin.email}"
+if admin.save
+  puts "✅ Admin user seeded: #{admin.email}"
+else
+  puts "❌ Failed to seed admin user: #{admin.errors.full_messages.join(', ')}"
+end
